@@ -14,6 +14,6 @@ export class GrammarController {
         let doc = nlp(sentence);
         doc.verbs().toPastTense();
 
-        return { result: doc.text() };  // Return the transformed text as a JSON response
+        return { reply: doc.text() };  // Return the transformed text as a JSON response
     }
 }

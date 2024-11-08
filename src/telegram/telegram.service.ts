@@ -26,7 +26,7 @@ export class TelegramService implements OnModuleInit {
                     this.bot.sendMessage(chatId, 'You are now in Grammar Check mode. Send a sentence to check');
                 } else if (text === '/conversation') {
                     this.userStates.set(chatId, 'conversation'); // Set state to conversation
-                    this.bot.sendMessage(chatId, 'You are now in Conversation mode. How can I assist you?');
+                    this.bot.sendMessage(chatId, 'The Conversation Mode is under development');
                 } else if (text === '/exit') {
                     this.userStates.delete(chatId); // Remove user state
                 } else {
@@ -56,19 +56,19 @@ export class TelegramService implements OnModuleInit {
     async handleGrammarCheck(chatId: number, sentence: string) {
         try {
             const response = await this.checkGrammar(sentence);
-            this.bot.sendMessage(chatId, `Corrected Sentense: ${response.result}`)
+            this.bot.sendMessage(chatId, response.reply)
         } catch (error) {
             this.bot.sendMessage(chatId, 'Please send a sentence to check.')
         }
     }
 
     async handleConversation(chatId: number, text: string) {
-        this.bot.sendMessage(chatId, 'This Conversation mode is under development')
+        this.bot.sendMessage(chatId, 'The Conversation Mode is under development')
     }
 
     async checkGrammar(sentence: string): Promise<any> {
         const response = await lastValueFrom(
-            this.httpService.post(`http://localhost:${process.env.PORT}/grammar/check`, {sentence})
+            this.httpService.post(`http://localhost:${process.env.PORT}/api/ask-query`, {sentence})
         );
         
         return response.data;
